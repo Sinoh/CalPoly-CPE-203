@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Lab 7, CSC 203</title>
+    <link rel="stylesheet" href="../css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Lab 7, CSC 203 - depth first search</h1></div>
+
+<p>
+This lab explores a recursive algorighm:  a depth-first
+search on a two-dimensional grid (a simple graph).  This depth-first
+search is a simple "pathing" algorithm.
+</p>
+
+ <div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li><p>To implement depth first search
+<li><p>Practice thinking about trajectory planning on a 2D grid structure
+</ul>
+
+
+<div class="header">
+<h2>Overview</h2>
+</div>
+Get the base code from either
+<a href="lab7given/text/">lab7given/text/</a> or from
+<a href="lab7given/graphical/">lab7given/graphical/</a>.  The two
+versions are functionally equivalent.  The text version will work
+from a terminal, and does not require any libraries.  The graphical
+version is prettier, but requires a graphical display, and it requires
+that the processing-core library be in your CLASSPATH.
+</a>
+<p>
+Begin with the base code.  Note that this code represents the world as 
+a 2D grid.  As is normally the case in computer graphics, the program
+uses a 2D coordinate system where {0, 0} is the upper left corner.
+This means that as the y value of a coordinate increases, the point is 
+<em>lower</em> on the screen. The following image shows the general 
+structure:<br>
+
+<img src="html_images/Coord.jpg">
+<p>
+The project we have been working with this quarter
+is using a similar data structure.  This lab's code is a much simpler
+version of a virutal world.
+<p>
+Test to make sure the base code works for you.  You might be able to run
+it with the provided <code>run.sh</code> script on Mac/Unix, or the
+<code>run.cmd</code> script from the Windows command prompt.
+When your program starts 
+it should look something like this.  The eventual goal is for the
+wyvern to find a valid path to the water, only traversing the grass and not 
+the rock obstacles:
+</p>
+<img src="html_images/start.png">
+<p>
+If you're using the text version, your screen should look like this:
+</p>
+<blockquote><pre> . . . . . . . . . . . . . . . . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+ . . W . . . . O . . . . . . . . . . . .    
+ . . . . . . . . O . . . . . . . . . . .    
+ . . . . . . . . . O . . . . . . . . . .    
+ . . . . . . . . . . O . . . . . . . . .    
+ . . . . . . . . . . . O . . . . . . . .    
+ . . . . . . . . . . . . O . . . . . . .    
+ . . . . . . . . . . . O . . . . . . . .    
+ . . . . . . . . . . O . . . . . . . . .    
+ . . . . . . . . . O . . . . . . . . . .    
+ . O O O O O O O O . . . . . . . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+ . . . . . . . . . . . . . . G . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+
+    Enter 'c' to clear the current path.
+    Enter 'e' to explore a new path.
+          'e' plus a number for multiple steps
+    Enter 'q' to quit.
+</pre></blockquote>
+<p></p>
+<div class="header">
+<h2>Getting started - Background</h2>
+</div>
+<p>
+Open the provided Java file and read through the code.  You will
+adapt this code to the project in an assignment.
+</p>
+
+<h2>Text Version</h2>
+<p>
+The text version of the program creates a <code>GridDisplay</code>
+object.  This object manages the screen and prints out the grid.
+You don't need to modify it.  You just call <code>setTile()</code>
+to set the character respresentation at a given row/column position,
+and <code>printGrid()</code> each time you want to print out the
+grid.  There's also a <code>delayForMilliseconds()</code> method
+you can use to achieve an animation effect.
+</p><p>
+You should find the code in <code>PathingMain</code> that asks for
+input when you run the program.  It calls the method <code>moveOnce()</code>
+each time it want to advance the path by a step.  You will modify the
+<code>moveOnce()</code> method as described below.
+<h2>Grahpical Version</h2>
+
+<p>
+The library requirements of the processing library begins with the 
+definition of a class that extends <code>PApplet</code> and that 
+includes a <code>main</code>
+method like the following to create a PApplet using the specified
+class.
+</p>
+
+<pre>
+
+   public static void main(String[] args)
+   {
+      PApplet.main("PathingMain");
+   }
+
+</pre>
+
+<p>
+This class overrides three important methods: <code>setup</code>,
+<code>draw</code> and <code>keyPressed()</code>.  The <code>setup</code> 
+method is run once when
+the, in Processing terminology, "sketch" is created.  The
+<code>draw</code> method is called repeatedly (by Processing) and
+will draw the tiles of the "sketch".
+</p>
+<p>
+The <code>keyPressed()</code> method is called when a key is pressed.  A
+protected field called <code>key</code> holds the key that was pressed.
+(Note that this is an example where the processing-core library
+does not follow good design practices.  It would be better if the key
+were passed in to keyPressed() as an argument.)  The
+<code>keyPressed()</code> method calls <code>moveOnce()</code>.
+You should modify the <code>moveOnce</code> method as described below.
+</p><p>
+NOTE:  You must return from <code>keyPressed()</code> for the
+pathing library to be able to update the screen.  For this reason, you
+should only try to take one step each time <code>keyPressed()</code> is
+called.
+</p>
+<h2>Both Versions</h2>
+<p>
+As it stands, in the base code, the pathing algorighm only moves down and to
+the right.  The code is there to give you an example
+of working with the grid data structure.
+<p>
+
+
+<p>
+You will also see that the code includes
+a two-dimensional array to represent the "world".  This grid
+should be 20x15.  For this lab, you will use this grid to store
+background tiles, obstacle tiles, and a goal tile.  The code uses
+an enum value represent these different types of tiles, specifically:<br>
+<blockquote>
+<code>enum GridValues { BACKGROUND, OBSTACLE, GOAL, SEARCHED }</code>
+</blockquote>
+</p>
+
+<div class="header">
+<h2>Step 1</h2>
+</div>
+
+<em>At this point you need to implement depth first search.</em>  Note you 
+can visit the neighboring nodes in whichever order you like.  Perhaps you
+can try visiting in various orders, and ultimately select an ordering 
+that clearly illustrates that the search runs into the obstacles at 
+some point.  In other words, don't pick directions that result in never
+visiting a grid cell that is occupied by an obstacle.
+</p>
+
+<div class="header">
+<h2>Step 2</h2>
+</div>
+
+<p>
+After the search completes, make sure that the code in place to 
+display the path.  make sure you understand how cells are being 
+added to path, and how the path is represented.
+In the below example image, all the cells with a blue square have 
+been visited, and the grid cells that make up the path are shown 
+with red.
+</p><p>
+For avoidance of doubt, when you are finished, the wyverin should always
+find the water without any manual intervention.  You should never need
+to press "c" to manually clear a path.  The wyverin should be adjacent to
+the water.
+</p>
+
+<img src="html_images/path.png">
+<p>
+The equivalent image from the text version is shown below.
+The wyverin is "W", the visited nodes are "+", the obstacles
+are "O", the path is "p" and the goal is "G".
+</p>
+
+<blockquote><pre> . . . . . . . . . . . . . . . . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+ . . W + + + + O . . . . . . . . . . . .    
+ . . p p p p + + O . . . . . . . . . . .    
+ . . . . . p p + + O . . . . . . . . . .    
+ . . . . . . p p + + O . . . . . . . . .    
+ . . . . . . . p . + + O . . . . . . . .    
+ . . . . . . . . . . + + O . . . . . . .    
+ . . . . . . . . . . . O . . . . . . . .    
+ . . . . . . . . . . O . . . . . . . . .    
+ . . . . . . . . . O . . . . . . . . . .    
+ . O O O O O O O O . . . . . . . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+ . . . . . . . . . . . . . . G . . . . .    
+ . . . . . . . . . . . . . . . . . . . .    
+
+    Enter 'c' to clear the current path.
+    Enter 'e' to explore a new path.
+          'e' plus a number for multiple steps
+    Enter 'q' to quit.
+</pre></blockquote>
+<div class="header">
+<h2>Demonstration</h2>
+</div>
+
+<p>
+Once you have completed the above steps, demonstrate completion of this lab
+to your instructor.
+</p>
+<div class="header">
+<h2>Submitting your Code</h2>
+</div>
+<p>
+See the syllabus for the due date.  Please submit your working code to the repository
+created by accepting the assignment at
+<a href="https://classroom.github.com/a/XxXRIsbd">https://classroom.github.com/a/XxXRIsbd</a>.
+</p><p>
+Make sure you only submit one version!  Do not submit both a graphical
+and a text version.  The grading script will look for the file
+<code>GridDisplay.java</code>.  If it finds it, it will attempt to
+compile and run the text version.  If not, it will attempt to compile
+and run the graphical version.
+</p><p>
+If you'd like to submit the lab one day late with a penalty of 5%, please add a file called <code>late_5_percent_off.txt</code> to the base directory of
+your repository.  If you'd like to submit the lab two days late with a
+penalty of 15%, please add a file called
+<code>late_15_percent_off.txt</code> to the base directory of your
+repository.
+</p>
+
+</div>
+</div>
+</body>
+</html>

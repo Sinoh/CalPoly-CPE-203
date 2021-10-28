@@ -1,0 +1,3 @@
+The functions that were not moved are clamp(), setAlpha(), toString(), and equals(). These were not moved because I could not see an immediate use of the functions. They did not fit any requirements of the classes so I left them in the Function class.
+
+There were only a few methods that were a little tricky to decided where to be placed. Two example would be the setBackground() and setBackgroundCell(). Though they describe the background in their method names, within their code, the use positions. In the end, I decided to but those two methods into background because they mainly pertain to the background.

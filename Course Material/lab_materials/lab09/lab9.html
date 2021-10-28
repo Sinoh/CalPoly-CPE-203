@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Lab 9, CSC 203</title>
+    <link rel="stylesheet" href="../css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Lab 9, CSC 203</h1></div>
+
+<p>
+This lab explores <em>streams</em> through the implementation of a program to 
+read in and transform a set of points, where each point is represented by
+an x, y and z value.  These points can be drawn to form an image.  The initial
+set of points includes a lot of "noise" - random points that obscure
+the image.  Through implementing various 
+computational operations on these points they are
+transformed into a more interesting image.
+</p><p>
+Streams are a useful tool to process collections. In particular, they allow
+operations to be carried out in parallel, e.g. on a multi-core computer.  
+We don't need to do that here because our data set is small, but it's a
+valuable technique to learn.  Streams can be used even in situations where
+parallel processing is not desirable.
+</p><p>
+A Java stream lets you operate on a
+collection of data using a sequence of commands and/or operations.
+You can read more about them here: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html">https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html
+</a>.
+
+
+ <div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li><p>To gain familiarity with the streams API
+<li><p>To use stream operations including filter, map and collect.
+</ul>
+
+
+<div class="header">
+<h2>Setup</h2>
+</div>
+<p>
+The given code contains a program to read in the file
+<code>positions.txt</code> and create a PNG file called
+<code>transformed.png</code>.  It then attempts to create a GUI
+that displays the image.
+<p>
+This data that is read represents a large number of 
+points in space with
+an x, y and z value.  You are to implement a method called
+<code>transformPoints()</code>.
+<p>
+For your reference, to start with the point file should look like:<br>
+
+<img src="startingPoints.jpg">
+<p>
+
+<div class="header">
+<h2>Stream API2</h2>
+</div>
+
+After you have confirmed that you can read and process the points,
+work through the following operations <em>using streams</em>
+</p>
+<ul>
+<li><p>Remove all points that have a z value > 2.0.
+<li><p>Scale down all the points by 0.5
+<li><p>Translate all the points by {-150, -37}
+</ul>
+Be sure that you use <code>collect, filer, map</code> to complete 
+these tasks.  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toList--">Collectors.toList()</a>
+might come in handy.<p>
+
+
+<div class="header">
+<h2>Submitting your Code</h2>
+</div>
+<p>
+See the syllabus for the due date.  Please submit your working 
+code to the repository created by accepting the assignment at
+<a href="https://classroom.github.com/a/mfGbBd3Q">https://classroom.github.com/a/mfGbBd3Q</a>.
+</p><p>
+It is recommended that you check your repository using after submitting.
+On the unix server, use the following command:
+</p>
+<blockquote><pre>checkgit &lt;git-login> 203 lab-9</pre></blockquote>
+<p>
+If the <code>checkgit</code> command is not found, make sure you have
+set your path according to the instructions in 
+<a href="../../computer_set_up.pdf">../../computer_set_up.pdf</a>.
+</p><p>
+If you'd like to submit the lab one day late with a penalty of 5%, please add a file called <code>late_5_percent_off.txt</code> to the base directory of
+your repository.  If you'd like to submit the lab two days late with a
+penalty of 15%, please add a file called
+<code>late_15_percent_off.txt</code> to the base directory of your
+repository.
+</p>
+</div>
+</div>
+</body>
+</html>

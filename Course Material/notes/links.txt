@@ -1,0 +1,30 @@
+				HELPFUL LINKS
+				=============
+
+Here are some links that might be helpful.
+
+Java Development Kit (command-line compiler and runtime):
+
+    http://java.sun.com/
+	Download "Java SE 9.x".  8 or 10 are fine, if you have that already.
+	"Java SE 9" means "Java Standard Edition, version 9," but it's often
+	called "JDK 1.9" (Java Development Kit).
+
+    https://docs.oracle.com/javase/9/docs/api/index.html?overview-summary.html
+	The JDK 1.9 Platform API Specification.
+
+    https://www.jetbrains.com/idea/
+	The IntelliJ IDEA IDE.  They have a free student license that
+	seems to be granted automatically to anyone with a .edu e-mail
+	address.  If you prefer, you can just use the free Community version,
+	too.
+
+    https://github.com/CalPolyCPE203-S18
+        our class's "organization page" on github.
+
+    https://classroom.github.com/classrooms/37823161-cal-poly-slo-cpe-csc-203-spring-2018-sections-1-6
+	Our github "Classroom"
+
+    https://classroom.github.com/a/Lft9B6xp
+	The invitation link for the set-up assignment that got you
+	access to this file.

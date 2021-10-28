@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Lab 1, CSC/CPE 203</title>
+    <link rel="stylesheet" href="http://www.csc.calpoly.edu/~akeen/css/lab.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Lab 1, CSC/CPE 203 - Java Collections and Control, Classes, Testing, and UML</h1></div>
+
+<p></p>
+
+<div class="header">
+<h2>Orientation</h2>
+</div>
+
+<p>
+This lab allows you to practice Java syntax related to collections and control (Part 1), basic class structure and methods (Part 2), and and introduction to UML (Part 3).  Those already familiar with Java should finish the lab and then offer to help others.
+</p>
+
+<div class="header">
+<h2>Objectives</h2>
+</div>
+
+<ul>
+<li>To be able to iterate through different Java collections with various control loops (part 1)
+<li>To be able to write your own class with specified methods (part 2).
+<li>To be able to use unit testing, including writing your own tests for your code (part 1 and 2)
+<li>To be able to write a very simple UML diagram of a class using yEd (part 3)
+</ul>
+
+<div class="header">
+<h2>Resources</h2>
+</div>
+
+<ul>
+<li>Your peers
+<li>Your instructor
+<li>The <a href="https://docs.oracle.com/javase/9/docs/api/index.html?overview-summary.html">Java Standard Library </a>- Bookmark this web page, or download a copy.  You will be using the Java Standard Library documentation regularly this quarter.
+</ul>
+
+<div class="header">
+<h2>Setup</h2>
+</div>
+
+<p>
+For this lab you are "required" once again to compile and run Java from the
+command-line.  
+</p>
+
+<p>
+To compile multiple Java files, you can run the following command
+(you can also specify specific files, as you prefer).
+</p>
+
+<p>
+<code>javac *.java</code>
+</p>
+
+<p>
+<b>IMPORTANT</b> For this lab, we will be using the JUnit library to help us test the correctness of our code.
+Thus, you will need to tell the compiler
+where the JUnit library is.  There are two ways to do this, with the second
+being the better. We will be using JUnit all quarter, so it really is better to set up the second (more permanent) solution.
+</p><p>
+You should have a copy of the JUnit library in the general repository,
+under general/libs.  For the rest of this document, I'll assume you put
+that repository in /home/YOU/cpe203/general; please substitute in your
+real path as appropriate.
+</p>
+
+<p>
+The first includes the library in the "class path" for the given
+call to the compile.  This must be repeated each time you compile
+the files and when you run the test cases (see below).  
+</p><p>
+<code>javac -cp /home/YOU/general/libs/junit-4.12.jar:/home/YOU/general/libs/hamcrest-core-1.3.jar:. *.java</code>
+</p>
+
+<p>
+<code>java -cp /home/YOU/general/libs/junit-4.12.jar:/home/YOU/general/libs/hamcrest-core-1.3.jar:. org.junit.runner.JUnitCore TestCases</code>
+</p>
+
+<p>
+Instead of using the -cp flag, you can set the CLASSPATH environment
+variable; it will be read by both java and javac.  
+It's usually more convenient to configure the system to set this variable
+each time you log in.  To do so, you can the following line to your
+<code>.profile</code> file in your home directory.
+</p>
+
+<p>
+<code>export CLASSPATH=/home/YOU/general/libs/junit-4.12.jar:/home/YOU/general/libs/hamcrest-core-1.3.jar:.</code>
+</p>
+
+<p>
+After doing so (and either restarting your shell/terminal or logging out
+and back in or typing "source .profile"), 
+you need only execute the following to compile and run.
+</p>
+
+<p>
+<code>javac *.java</code>
+</p>
+
+<p>
+<code>java org.junit.runner.JUnitCore TestCases</code>
+</p>
+
+<div class="header">
+<h2>Specifications</h2>
+</div>
+
+<p></p>
+
+<div class="header">
+<h2>Part 1: Java Control Constructs and Collection Introduction</h2>
+</div>
+
+<p>
+In the provided <code>part1</code> subdirectory, edit each of the given
+files to complete the implementations and tests. Comments in each file
+will direct the edits that you are expected to make. Look up any classes you don't know how to use (such as <code>Map</code>) in the Java Standard Library.
+</p>
+
+<p>
+It is recommended that you use the order of the unit tests in
+<code>TestCases.java</code> as a guide for the order in which
+to complete the methods.  This order corresponds to the increasing
+complexity of the methods.  A good process to follow would be to read
+the first group of tests in <code>TestCases.java</code>. Edit the corresponding
+class to make the code pass the tests. <i>Run</i> the tests to make sure
+they now pass.  Add the required additional test case. <i>Run</i> the tests again.
+Then move on to the next group.
+</p>
+
+<p>
+The output for a failed test can be verbose - a fairly deep stack trace is
+printed.  You can see the specific error at the numbered line above
+each stack trace.  It's generally a good idea to fix the code one file 
+at a time, re-run it after each fix to make sure that the number of errors 
+is decreasing.
+</p>
+
+<div class="header">
+<h2>Part 2: Classes and Objects</h2>
+</div>
+
+<p>
+For this part you will implement a simple class (named <code>Point</code>)
+representing a point in two-dimensional space.  Do this by creating a new file
+named: Point.java and put all code specified below.  This class must support
+the following operations (including a single constructor).
+</p>
+
+<ul>
+<li>
+<p><code>public Point(double x, double y)</code></p>
+<p>Constructor.</p>
+</li>
+<li>
+<p><code>public double getX()</code></p>
+<p>Returns the x-coordinate of this point.</p>
+</li>
+<li>
+<p><code>public double getY()</code></p>
+<p>Returns the y-coordinate of this point.</p>
+</li>
+<li>
+<p><code>public double getRadius()</code></p>
+<p>Returns the distance from the origin to the point.</p>
+</li>
+<li>
+<p><code>public double getAngle()</code></p>
+<p>Returns the  angle (in radians) from the x-axis in the in  range of -<em>pi</em> to <em>pi</em>.</p>
+</li>
+<li>
+<p><code>public Point rotate90()</code></p>
+<p>Returns a newly created Point representing a 90-degree (counterclockwise)
+rotation of <code>this</code> point about the origin.  Consider drawing
+a picture for a point not on an axis as a guide for how you might implement
+this operation (hint: there is a solution that does not require any
+sophisticated computations). 
+
+</li>
+</ul>
+
+<p>
+Update the given <code>TestCases.java</code> file, in the <code>part2</code>
+directory, to verify that your implementation is working.  <b>You will be asked to show
+a test case for every method you wrote.</b>
+You will see some
+existing test cases that are used to verify some design/style aspects of your
+implementation, which you do not need to change or modify.
+</p>
+
+<p><i>Note that you are not expected to define
+equality for <code>Point</code> objects at this time; as such, you will
+need to test the components (<code>x</code> and <code>y</code>) for the
+expected values.  You may write an equals method for <code>Point</code> if you know how.</i></p>
+
+<div class="header">
+<h2>Part 3: UML</h2>
+</div>
+<p>
+See the following <a href="Lab1UMLexercise.pdf">pdf description</a> of the UML portion of this lab.</p>
+
+<div class="header">
+<h2>Demo</h2>
+</div>
+
+<p>
+Show your finished UML diagram from Part 3 to your instructor <i>in lab</i> the day after it is due. Your Parts 1 and 2 will be tested via submission to GitHub.
+</p>
+
+<div class="header">
+<h2>Submission</h2>
+</div>
+
+<p>
+Submit your code for Parts 1 and 2 to GitHub by midnight on the due date.  That means you must commit and <i>push</i> your code. We will test and grade the code that you submit.  Please also submit the URL to your repository via PolyLearn; this lets us know if you want to submit before the due date.  Code submitted after midnight on the due date will not be graded.
+</p>
+
+</div>
+</div>
+</body>
+</html>

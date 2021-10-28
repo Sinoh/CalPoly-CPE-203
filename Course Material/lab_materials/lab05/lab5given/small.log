@@ -1,0 +1,28 @@
+START session0 region2 customer0
+START session1 region2 customer0
+START session2 region1 customer0
+START session3 region2 customer0
+VIEW session2 product3 400
+VIEW session2 product2 300
+BUY session2 product3 400 5
+VIEW session2 product2 300
+END session0
+END session2
+START session0 region2 customer0
+START session2 region1 customer0
+VIEW session3 product1 200
+VIEW session1 product1 200
+VIEW session3 product1 200
+VIEW session0 product0 100
+VIEW session3 product0 100
+VIEW session3 product1 200
+VIEW session0 product1 200
+VIEW session2 product0 100
+VIEW session3 product3 400
+BUY session0 product3 400 4
+VIEW session0 product3 400
+VIEW session0 product3 400
+END session0
+END session1
+END session2
+END session3

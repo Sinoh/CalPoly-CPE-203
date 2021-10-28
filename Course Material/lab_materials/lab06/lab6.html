@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Lab 6, CSC/CPE 203</title>
+    <link rel="stylesheet" href="../css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Lab 6, CSC 203 - Inheritence</h1></div>
+
+<p>
+In this lab you will explore some aspects of inheritance in Java.
+In the first part, you will refactor a provided solution which implements a
+simple calculator to gain
+experience with inheritance.
+</p>
+
+ <div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li><p>To explore the the use of inheritence 
+<li><p>To practice recognizing when classes share data or similar methods and how to use inheritence to make these relationships explicit  
+</ul>
+
+
+<div class="header">
+<h2>Given Files</h2>
+</div>
+
+<p>
+The given files for this lab are in <a href="lab6given">lab6given</a>.
+This is a working java program that implements a simple calculator.  Here's
+a sample session of using the calculator:
+</p>
+<blockquote><pre><code>
+wffoote@Lelu:~/cpe203/general/lab_materials/lab06/lab6given$ ./run.sh
+Welcome to the simple calculator.
+ To exit, hit &lt;ctrl-d> in Unix or &lt;ctrl-z> in Windows.
+-> 2+2
+(2.0 + 2.0) => 4.0
+-> -3/5
+(-3.0 / 5.0) => -0.6
+-> set foo=9
+set foo = 9.0 => 9.0
+-> 7/f00
+unbound identifier: f00
+-> 7/foo
+(7.0 / foo) => 0.7777777777777778
+-> ^D
+</code></pre></blockquote>
+<p>
+An overview of some of the key classes that make up the calculator is
+given in the following UML diagram:
+</p><p>
+<img src="doc_files/calculator.svg">
+</p>
+
+<div class="header">
+<h2>Refactoring using Inheritance</h2>
+</div>
+
+<p>
+For this lab you will modify the calculator to refactor common functionality 
+out of some of the classes into a common class.
+</p>
+
+<p>
+   Many of the expressions are what we would typically call binary
+expressions.  In particular, <code>AddExpression</code>,
+<code>DivideExpression</code>, <code>MultiplyExpression</code>,
+and <code>SubtractExpression</code> each have very similar behavior.
+To see this clearly, compare <code>AddExpression.java</code> and
+<code>SubtractExpression.java</code>.
+
+<p>
+To refactor this common behavior, the steps below might serve as a
+helpful guideline.
+</p>
+
+<ul>
+<li>Create a new class named
+<code>BinaryExpression</code>.  This class should inherit from
+<code>Expression</code>.
+<li>Each of the classes listed above must eventually be modified to inherit from
+<code>BinaryExpression</code>. Pick one to start with.
+<li>Now lift the data that this class shares in common with the other
+classes you'll eventually be modifying into the parent class
+<code>BinaryExpression</code>.  Make this data
+<code>private</code>.
+<li>With the common data in the parent, the common functionality will also
+be lifted.  Move the <code>evaluate</code> and <code>toString</code> methods
+into the <code>BinaryExpression</code> class.
+<li>Add an additional argument to the <code>BinaryExpression</code>
+constructor.  Modify the subclass to pass a <code>String</code>,
+representing the operator, to the parent class.  The signature of
+the subclass' constructor should not change.
+Update <code>BinaryExpression</code>'s <code>toString</code> to use
+this operator string.
+<li>Run and test your program.
+<li>Modify the code in <code>evaluate</code> in the
+<code>BinaryExpression</code> class
+to evaluate each operand (i.e., <code>lft</code> and <code>rht</code>)
+and to pass the results to a new, <code>protected</code> method named
+<code>applyOperator(...)</code>.  This new method will not be defined in
+<code>BinaryExpression</code>, but must be declared.  What's the name
+for this sort of method?
+<li>In the subclass,implement this new method
+as is appropriate for the subclass's operator.
+<li>Test your program, and make sure it still works.
+<li>One by one, modify the other classes to inherit from
+    <code>BinaryExpression</code>.
+</ul>
+
+
+<div class="header">
+<h2>Submission</h2>
+</div>
+<p>
+See the syllabus for the due date.  Please submit your working code to the repository
+created by accepting the assignment at
+<a href="https://classroom.github.com/a/VgpaPVAJ">https://classroom.github.com/a/VgpaPVAJ</a>.
+<p>
+If you'd like to submit the lab one day late with a penalty of 5%, please add a file called <code>late_5_percent_off.txt</code> to the base directory of
+your repository.  If you'd like to submit the lab two days late with a
+penalty of 15%, please add a file called
+<code>late_15_percent_off.txt</code> to the base directory of your
+repository.
+</p>
+
+</div>
+</div>
+</body>
+</html>

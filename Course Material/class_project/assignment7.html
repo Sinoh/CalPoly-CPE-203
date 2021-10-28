@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Assignment 7 ("Program 5"), CSC/CPE 203</title>
+    <link rel="stylesheet" href="css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Assignment 7 ("Program 5"), CSC/CPE 203</h1>
+  </div>
+
+<p>
+For this assignment you will modify the virtual world to support a
+"world-changing" event.  This event is to be triggered by a mouse press.
+When the mouse button is pressed at a location on the screan, it should
+affect the tiles near to the button press. The event must be visualized 
+by changing
+the affected background tiles and by modifying the affected entities
+(more below).  In addition, the world event must create a new type
+of entity.
+</p>
+<div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li>Add new functionality to existing code base demonstrating an
+understanding of the exisiting design and functionality
+<li>Be able to evaluate the current design based on the experience of
+adding to the code 
+</ul>
+
+<div class="header">
+<h2>Concurrent Modification Exception</h2>
+</div>
+
+<p>
+One thing to watch out for is a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ConcurrentModificationException.html">java.util.ConcurrentModificationException</a>.
+This exception can be generated if you attempt to modify a collection,
+like a set, while you
+are iterating over that same collection.  This could happen, for example, 
+if you attempted to make a modification to the set of entities while you are
+iterating over that set.
+</p><p>
+There are several ways to solve this problem.  In this case, one reasonable
+solution is to refrain from adding to or removing from the set during
+iteration.  Instead, you can defer any modification of the set until
+the iteration is finished.  This can be done by creating an action or an
+event to perform the modification, once the iteration is finished.  That
+action needs to be stored on a list of pending work, and processed once
+the iteration is complete.
+</p><p>
+Another reasonable
+solution is to simply copy all of the elements of the set into an 
+<code>ArrayList</code>, 
+and iterate over the list.  This is a fairly standard technique, except
+when dealing with very large sets.  For example, consider the following code:
+</p>
+<blockquote><pre>void modifyList(Set&lt;Something> theSet) {
+    ArrayList&lt;<Something> copy = new ArrayList(theSet);
+    for (Something s : copy) {
+        if (I don't like s) {
+            theSet.remove(s);
+        }
+        if (I want to add something to the set) {
+            Something newElement = ...
+            theSet.add(s);
+        }
+    }
+}</pre></blockquote>
+<p>
+If we were to iterate directly over the set, we would not be able to add
+and remove elements during the iteration.
+</p>
+
+<div class="header">
+<h2>World Changing Event: Detecting a Mouse Press</h2>
+</div>
+<p>
+The processing core library has an admittedly odd mechanism for an application
+to receive a notification when a mouse is pressed.  Assuming that
+<code>VirtualWorld</code> is still your sublcass of 
+<code>processing.core.PApplet</code>, add the following code to your
+<code>setup()</code> method:
+<blockquote><pre>    registerMethod("mouseEvent", this);</pre></blockquote>
+<p>
+and add the following method to the class:
+</p>
+<blockquote><pre>public void mouseEvent(processing.event.MouseEvent event) {
+    if (event.getAction() == processing.event.MouseEvent.PRESS) {
+        int x = event.getX();
+        int y = event.getY();
+        System.out.println("Mouse pressed at " + x + ", " + y);
+    }
+}</pre></blockquote>
+<p>
+Because of the odd way that the processing library handles this method,
+you can <strong>not</strong> mark it with <code>@Override</code>.
+</p>
+
+
+<div class="header">
+<h2>World Changing Event: Visualization</h2>
+</div>
+
+<p>
+Decide on a world-changing event, like a river spawning, a volcano erupting,
+or a rainbow being cast across the land.  This event must be triggered
+by a mouse-click and must affect at least 7 background tiles of the world 
+in proximity to the mouse position when the click occurs, unless the click
+occurs at the edge of the world.  Note that background
+tiles might be obscured by an entity, so there might be a visible change in
+fewer than 7 tiles.  The event should affect no more than half of the world.
+</p>
+
+<p>
+The world event must be visualized by modifying the background image associated
+with the affected tiles.  You are free to modify them however you would
+like, and are encouraged to be creative.  Remember that a tile is
+<code>TILE_WIDTH</code> pixels wide and <code>TILE_HEIGHT</code> pixels high.
+Some methods that might come in handy, at least to get started,
+are <code>createImageColored()</code>, <code>viewportToWorld()</code>,
+and <code>setBackground()</code>
+
+</p>
+
+<div class="header">
+<h2>World Changing Event: Effect</h2>
+</div>
+
+<p>
+At least one type of existing mobile entity (e.g., miners or blobs)
+must be affected by the world event, based on proximity to the event
+location.  More specifically, this type of entity should change in
+appearance and behavior.
+</p>
+
+<p>
+For example, a rainbow might change nearby miners into fairies that seek
+out crystals.  Or the event might make the blacksmith start to move,
+while maintaining the miner’s prior behavior of bringing ore to a blacksmith.
+</p>
+
+<p>
+The affected/transformed entities should change appearance and should
+change behavior.
+</p>
+
+
+<div class="header">
+<h2>World Changing Event: New Entity</h2>
+</div>
+
+<p>
+The world event must cause a new type of mobile entity to spawn.  This
+new entity should animate and move according to logic defined by you.
+</p>
+
+<p>
+For instance, the new entity might seek out blobs to turn them into 
+crystals, chase down miners to infect them with the plague, or travel
+the world spreading apple seeds.
+</p>
+
+<p>
+<b>Note:</b> This new entity is in addition to the entity transformation
+triggered by the event as just discussed.
+</p>
+
+<div class="header">
+<h2>Description</h2>
+</div>
+
+<p>
+Include a text file named <code>WORLD_EVENT.txt</code> in your submission that
+describes 1) how to trigger the event, 2) what should happen when the
+event is triggered, 3) what the affected entities should do, and 4) what
+the new entity is and how it should behave.
+</p>
+
+<div class="header">
+<h2>Design</h2>
+</div>
+
+<p>
+   Be sure to adhere to the design principles discussed this quarter.
+Refactor your code as needed, and resist the urge for quick hacks that
+would increase maintenance costs.
+</p>
+
+<p>
+   You are encouraged to reflect on the quality of your design and the
+effort required to add the functionality for this assignment.  How do
+you think this effort compares to that needed to add the same functionality
+to the originally given code?  Consider what would be required in the old
+code to add a new entity whose movement is quite different than the original
+set of entities.
+</p>
+
+<div class="header">
+<h2>Assignment Submission</h2>
+</div>
+
+Be sure to ask your instructor how to submit your sections code.
+<p>
+Your submission must include all source files, including those that
+are unchanged.  Your grader should be able to build your project based
+on the files submitted.  You <b><u>must also</u></b> submit all image
+files, the image list, and the world save file, since this assignment
+requires changes to some/all of these.  You do not need to include
+any jar files, however.
+</p>
+<p>
+To create at empty GitHub repository for submission, accept the assignment
+at <a href="https://classroom.github.com/a/dG6l-C1L">https://classroom.github.com/a/dG6l-C1L</a>.
+</p><p>
+Your submission must include all source files, including any that
+are unchanged.  Your grader should be able to build your project based
+on the files submitted.  Please also submit the image files,
+the image list, and the world save file.  
+</p><p>
+Please be sure to so verify that you have submitted everything properly.
+A good way to do this is with <code>checkgit</code> on the Unix server.  The
+"-run" option will run your program, so you can make sure it displays
+properly.  Make
+sure your PATH on the unix server includes <code>/home/wffoote/public/bin</code>.
+See <a href="../computer_set_up.pdf">../computer_set_up.pdf</a> for instructions.  If
+all is set up, the following command should work:
+<blockquote><pre>    checkgit -run &lt;git-login> 203 assignment-7</pre></blockquote>
+<p>
+<code>-run</code> will only work if you have a graphical screen, e.g.
+if you're on one of the lab computers.
+</p><p>
+If you'd like to submit the assignment one day late with a penalty of 5%, please add a file called <code>late_5_percent_off.txt</code> to the base directory of
+your repository.  If you'd like to submit the assignment two days late with a
+penalty of 15%, please add a file called
+<code>late_15_percent_off.txt</code> to the base directory of your
+repository.
+</p>
+
+
+<p>
+</p>
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <title>Assignment 3 ("Design Document 2"), CSC/CPE 203</title>
+    <link rel="stylesheet" href="css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Assignment 3 ("Design Document 2"), CSC/CPE 203</h1>
+  </div>
+
+<p>
+In the first pair of assignments you identified methods and moved them
+into the most approprite classes.  In doing so, you may
+have noticed that some classes support functionality (behaviors, largely
+due to what its methods do) that
+are not appropriate for all instances of the class.  Moreover, these
+classes support data attributes that are not used by all instances
+of the class.
+</p>
+
+<p>
+This is an issue of <em>cohesion</em>.  Specifically, these classes 
+exhibit low (poor) cohesion by representing
+multiple (admittedly related) concepts by combining all attributes and
+methods used by each concept.  Tips for identifying classes with low cohesion
+are given later.
+</p>
+
+<p>
+This design assignment and the next programming assignment
+asks that you improve the code base by splitting
+classes exhibiting low cohesion into multiple highly cohesive classes.
+Doing so in the context of Java will require identifying common methods for
+each subset of these new classes and then introducing a new <b>interface</b>
+for each logical grouping of these methods (more on this below).
+</p>
+
+<div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li>Deepen your understanding of the specific functionality of the large project code
+<li>To be able to identify where cohesion is low in an exisiting class design
+<li>To be able to modify an exisiting UML diagram (adding classes and interfaces 
+    where needed to improve the overall code design in terms of cohesion)
+<li>Specifically, for this assignment, in the UML, create new classes and interfaces 
+    to remove the need for enumerated types for <code>*Kind</code> and any other 
+    classes that contain methods that do not support the primary role of instances 
+    of that class.
+</ul>
+
+
+<div class="header">
+<h2>Task Overview</h2>
+</div>
+
+<p>
+You must identify those classes with low cohesion and then split these
+classes into separate classes exhibiting high cohesion.  When you do
+this in a program, each of
+these new classes introduces a separate type.  When you do this,
+you typically need to "root" these new types 
+at a single type (typically defined by an <code>interface</code>) so that
+there is a common Java supertype for classes that use your types.
+You will not introduce any additional classes beyond those used to improve 
+cohesion
+(e.g., you will not use inheritance in this pair of assignments).  This
+refactoring is quite likely to increase the amount of code through the
+duplication of some methods; this is expected and ok at this time.
+</p>
+
+<p>
+Based on the original source code, there are likely two categories of
+classes with low cohesion.  The first category consists of those classes
+that depend on <code>ActionKind</code> or <code>EntityKind</code>.  The
+second category depends on your final distribution of the methods in
+the original <code>Functions</code> class.
+</p>
+
+<ul>
+   <li><p>Kind: The original source code uses <code>ActionKind</code> and
+      <code>EntityKind</code> to allow each <code>Action</code> instance
+      and each <code>Entity</code> instance to play one of potentially many
+      roles.  As a starting point of your refactoring, you are to eliminate these
+      <code>*Kind</code> enum classes, by introducing a class for
+      each "kind" of object.
+      </p>
+   </li>
+   <li><p>Review all of the classes, including the ones your just refactored,
+      with a focus on cohesion.  Does a class contain data that is not used 
+      by all instances of the class?  For example, does each "kind" (each subset)
+      use only subsets of the data?  Are there groups of methods that are only
+      called for certain subsets of classes that share a common interface?  Are
+      there methods with an empty implementation of some methods?  Does a class
+      contain methods that do not support the primary role of instances
+      of the class?  These are all signs that some additional refactoring
+      can be done.  Perhaps there are subtypes of Entity, or maybe other
+      interfaces that could be introduced?</p>
+    <li><p>
+      Finally, look for things like groups of static methods, like the ones used to
+      create instances or parse files.  You don't need to use inheritance, but
+      grouping related methods in a single class can be a good way to increase
+      cohesion.  If things can be made private, that reduces coupling, too.  Finally,
+      look out for static methods that can be eliminated entirely!
+      </p>
+   </li>
+</ul>
+
+<p>
+As before, you are encouraged to develop both the UML design document and
+the code refactoring at the same time. You are further encouraged to
+implement the refactoring incrementally so that your refactored program
+executes properly at each step. You will submit the design document before
+the final refactoring submission to allow for feedback on your design that
+can then be incorporated into your refactoring.
+</p>
+
+<div class="header">
+<h3>Introducing Interfaces</h3>
+</div>
+
+<p>
+The following are some tips on approaching the introduction of interfaces
+to support splitting classes.
+</p>
+
+<p><b>Note:</b> An interface shouldn't have a method that isn't applicable
+to all of the classes that implement that interface.  In more advanced
+situations, it's not uncommon for the implementation of a method for certain 
+types of objects (certain classes) to be "do nothing," but in this kind
+of simple object decomposition, this should be extremely rare.  Further,
+a class should not normally implement an interface and then define a method
+required by the interface that raises an exception indicating that the method
+is not supported.
+</p>
+
+<p>
+Your introduction of interfaces for this project must
+be meaningful.  It is insufficient to define a single interface with all
+methods that are then only partially implemented by each of the classes.
+</p>
+
+<ul>
+   <li><p>First, copy the original class to each of the new classes (each
+      defining a single role).  This can be easily done in the UML editor.
+   </p></li>
+   <li><p>In each new class, eliminate each data attribute not used by
+      this class and each method not supported by this class.  (For this
+      project, you can examine how instances playing this role are created
+      as a hint about which data attributes are actually used.)
+   </p></li>
+   <li><p>Change the original class into an interface declaring only those
+      methods shared by every new class.
+   </p></li>
+   <li><p>Group the new classes into sets with similar functionality.
+      Introduce additional interfaces as appropriate (see below).
+   </p></li>
+   <li><p>Examine the original uses of the objects (before this change)
+      to determine which methods are used by client code.  Can the client
+      code still access that method based on the reference type?  Will it
+      be able to do so if you change the type to one of the interfaces that
+      you have already introduced?
+   </p></li>
+</ul>
+
+<p>
+The above tips apply to creating the UML diagram.  <b>When you refactor the code,
+be sure to read "Tips on Refactoring Methods" in
+<a href="assignment4.html#refactoring">Assignment 4</a>.</b>
+
+
+<div class="header">
+<h2>Design Document</h2>
+</div>
+
+<p>
+   Your "design document" will consist only of an updated UML diagram.
+Copy the UML diagram from the prior design assignment to
+<code>Interfaces.graphml</code>.  Then update this copy to reflect the
+new classes and the interfaces.
+</p>
+
+<p>
+   You can add an <b>interface</b> to the UML document by adding a class
+and then, under the <em>UML</em> tab in properties, setting the
+<em>Stereotype</em> field to "interface".  For each interface that a class
+implements, be sure to draw an
+<a href="https://en.wikipedia.org/wiki/Class_diagram#Relationships">
+appropriate arrow</a> (dashed line with open triangle head) from the class
+to the interface.  If an interface extends another interface in your design,
+then be sure to connect them with an appropriate arrow (solid line with open
+triangle head).
+</p><p>
+<center><a href="https://en.wikipedia.org/wiki/Class_diagram#Relationships"><img src="uml_from_wikipedia.png"></a></center>
+</p>
+
+<div class="header">
+<h2>Assignment Submission</h2>
+</div>
+<p>
+To create at empty GitHub repository for submission, accept the assignment
+at <a href="https://classroom.github.com/a/fdgSFzYF">https://classroom.github.com/a/fdgSFzYF</a>.
+<p>
+Your submission of your design document will consist of the following file:
+</p>
+
+<ul>
+   <li>Interfaces.graphml &mdash; the UML diagram</li>
+</ul>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <title>Assignment 4 ("Programming 2"), CSC/CPE 203</title>
+    <link rel="stylesheet" href="css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Assignment 4 ("Programming 2"), CSC/CPE 203</h1>
+  </div>
+
+<p>
+This programming assignment is the complement of the
+<a href="assignment3.html">Design Document 2</a>
+assignment.  The general task was already explained; this assignment
+description provides additional details and tips for the programming
+aspects of the redesign.
+</p>
+
+<div class="header">
+<h2>Objectives</h2>
+</div>
+
+<ul>
+<li>To be able to read and understand java code and be able to evaluate the cohesion of the class structure in exisiting code
+<li>To be able to implement interfaces and use them to improve cohesion in a project design
+<li>To be able to translate your code design from UML into refactored Java code
+<li>Specifically, for this assignment, in the actual java code, introduce appropriate classes 
+    in order to remove the need for enumerated types and for any other classes that contain 
+    methods that do not support the primary role of instances of that class
+<li>To be able to make design changes to a large code base and have the code still work
+</ul>
+
+
+<div class="header">
+<h2>Task Overview</h2>
+</div>
+
+<p>
+You must identify those classes with low cohesion and then split these
+classes into separate classes exhibiting high cohesion.  Since each of
+these new classes will introduce a separate type, you may need to "root"
+them at a single type (as defined by an <code>interface</code>) so that
+they all share a common Java type.  You will
+not introduce any additional classes beyond those used to improve cohesion
+(e.g., you will not use inheritance in this pair of assignments).  This
+refactoring is quite likely to increase the amount of code through the
+duplication of some methods; this is expected and ok at this time.
+</p>
+
+<p>
+Based on the original source code, there are likely two categories of
+classes with low cohesion.  The first category consists of those classes
+that depend on <code>ActionKind</code> or <code>EntityKind</code>.  The
+second category depends on your final distribution of the methods in
+the original <code>Functions</code> class.
+</p>
+
+<ul>
+   <li><p>Kind: The original source code uses <code>ActionKind</code> and
+      <code>EntityKind</code> to allow each <code>Action</code> instance
+      and each <code>Entity</code> instance to play one of potentially many
+      roles.  You are to eliminate these
+      <code>*Kind</code> enum classes 
+      by splitting <code>Action</code> and <code>Entity</code> into
+      multiple new classes.
+      </p>
+   </li>
+   <li><p>Other: Review all of the classes with a focus on cohesion.  Does
+      a class contain data that is not used by all instances of the class
+      (i.e., each "kind" uses only subsets of the data)?  Does a class
+      contain methods that do not support the primary role of instances
+      of the class (e.g., static methods that are used to create instances
+      or parse files, but that are not actually part of the functionality
+      provided by the instances)? For example, this is the time to give
+      the parse* methods a betterm home.
+      </p>
+   </li>
+</ul>
+
+<p>
+As before, you are encouraged to develop both the UML design document and
+the code refactoring at the same time. You are further encouraged to
+implement the refactoring incrementally so that your refactored program
+executes properly at each step. You will submit the design document before
+the final refactoring submission to allow for feedback on your design that
+can then be incorporated into your refactoring.
+</p>
+
+<div class="header">
+<h2>Source Code Refactoring</h2>
+</div>
+
+<p>
+   Your refactoring should mirror the work done for your design document
+(UML diagram) augmented with feedback from your instructor.
+</p>
+
+<p>
+   Your refactoring must not add or remove any program functionality.  The
+resulting program must work as before.
+</p>
+
+<div class="header">
+<h3><a name="refactoring">Tips on Refactoring Methods</a></h3>
+</div>
+
+<p>
+   You can use the compiler (on the command-line or in the IDE) to help
+you with your refactoring.  In particular, as you introduce interfaces, the
+compiler will report attempts to use methods not supported by the specified
+type.  The existence of such errors may indicate missing methods for an
+interface or, more likely, attempts to treat a group of objects more
+generally than should be supported (for example, because not all of them implement the
+desired operation).
+</p>
+
+<p>
+   As part of your refactoring, you will be eliminating the <code>*Kind</code>
+classes.  This is desired to allow each new class to directly implement a
+single role, but has the unfortunate side-effect of eliminating a simple
+check of an object's "kind".  This check is used, for instance, when
+searching for the nearest <code>Ore</code> to a miner.  But don't worry!
+Java has a better mechanism:  <code>instanceof</code>.
+</p>
+
+<p>
+Consider the following tips.
+</p>
+
+<ul>
+   <li><p>For a class that is being split into multiple class, you can change the
+      original class into an interface declaring no methods.  Compile the
+      program to determine all uses of this interface (the method
+      invocations will trigger compiler errors).  Now determine which
+      of these methods must be supported by all instances of this
+      interface and which should be supported via additional interfaces.
+      </p>
+      <p>You can copy the original class to, and change all references to,
+      <code>NameTmp</code> and declare it to <em>implement</em> the new
+      interface so that most of the code will continue to compile.
+      </p>
+   </li>
+   <li>
+      <p>
+      For those methods that are not logically part of the primary interface
+      defined in the prior step, introduce new interfaces and change the
+      necessary variable declarations to use the new types.
+      </p>
+   </li>
+   <li>
+      <p>
+      A check for the "kind" of a referenced object can, for now
+      (though we will address this later), be replaced by a use of
+      <code>instanceof</code>.  Use this only when necessary; certainly
+      <code>instanceof</code> is not needed to check the type of the value
+      of <code>this</code> inside an instance method!  (If you don't understand
+      why, please re-read the meaning of <code>this</code> in Horstmann.)
+      </p>
+   </li>
+   <li>
+      <p>
+      In the case that a <code>*Kind</code> value was passed as a parameter
+      to another method (and then compared within it), you can do the following.
+      </p>
+      <ul>
+      <li><p>
+      Change the parameter type from the specific <code>*Kind</code> to
+      <code>Class</code> (this is a type where each instance represents
+      properties of a specific Java class).
+      </p></li>
+      <li><p>
+      Instead of passing a
+      <code>*Kind</code> value, use <code>.class</code> to get the object
+      associated with the desired Java class (e.g., <code>String.class</code>
+      gives the <code>Class</code> object describing the <code>String</code>
+      class).
+      </p></li>
+      <li><p>
+      Change the comparison to use the <code>isInstance()</code> method on
+      the <code>Class</code> object, passing to this method the object
+      to be checked.
+      </p></li>
+      </ul>
+      <p>
+      NOTE:  It's OK to rename or even eliminate methods that are no longer
+      necessary.
+      </p><p>
+      NOTE:  This use of <code>Class.isInstance()</code> is a form of "reflection,"
+      and is generally frowned upon.  In this case it is an interim measure.  We
+      will fix this in a subsequent assignment.
+   </li>
+</ul>
+
+<div class="header">
+<h2>Assignment Submission</h2>
+</div>
+<p>
+To create at empty GitHub repository for submission, accept the assignment
+at <a href="https://classroom.github.com/a/ok3fQ85f">https://classroom.github.com/a/ok3fQ85f</a>.
+</p><p>
+Your submission must include all source files, including any that
+are unchanged.  Your grader should be able to build your project based
+on the files submitted.  Please also submit the image files,
+the image list, and the world save file.  
+</p><p>
+Please be sure to so verify that you have submitted everything properly.
+A good way to do this is to clone your assignment repository to a temporary
+directory (perhaps on a lab compuer), build it from the command line, and
+check that it works as expected.
+</p>
+
+</div>
+</div>
+</body>
+</html>

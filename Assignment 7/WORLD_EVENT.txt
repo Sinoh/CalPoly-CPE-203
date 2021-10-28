@@ -1,0 +1,17 @@
+1) how to trigger the event.
+	Click anywhere on the world that is no already occupied by an entity
+
+2) what should happen when the event is triggered.
+	A volcano will erupt and lava will flow around it.
+	Wyverns will start to spawn at the edge of the lava.
+	Wyverns have a 10% chance of spawning each second from each volcano.
+ 
+3) what the affected entities should do.
+	Miners are the only entities affected.
+	Once Wyverns start spawning, they will start calling more miners to come.
+	This will occur when miners give away their ores to the blacksmiths,
+	Miners will come from off the screen randomly from one of the four sides of the map.
+
+4) what the new entity is and how it should behave.
+	Wyverns will track Miners that are full and freeze them.
+	Volcano and lava will act as new obstacles.

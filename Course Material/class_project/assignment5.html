@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <title>Assignment 5 ("Programming 3"), CSC/CPE 203</title>
+    <link rel="stylesheet" href="css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Assignment 5 ("Programming 3"), CSC/CPE 203</h1>
+  </div>
+
+<p>
+During the refactoring pass of the previous assignment, you likely noticed
+a fair amount of duplication, both in terms of instance variables and
+methods, when breaking <code>Entity</code> into multiple separate classes.
+For this assignment, you will eliminate this duplication by refactoring
+the duplication into new <b>abstract classes</b>. The entity classes
+will then inherit part of their implementation (consisting of instance
+variables and methods), as 
+appropriate, rather than duplicating that code in each subclass.
+</p>
+
+<ul>
+   <li>Why do this?  Code is easier to maintain when there is less
+      duplication.  A change only has to be made in one place, rather
+      than in all duplicates.  It's also slightly more efficient.
+   </li>
+   <li>Why abstract classes?  A direct instances of these new classes
+      would not be meaningful in the context of the program.  Declaring
+      the class <code>abstract</code> prevents instantiation, but still
+      allows for inheritance.  It also allows the class to have abstract
+      methods, if appropriate.
+   </li>
+   <li>Why use inheritance?  Often, composition is preferred to inheritance
+       (see, for example, 
+      <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">composition to inheritance</a>.)
+      However, that style has some drawbacks.  In our case, the different subclasses
+      are intrinsically highly coupled, due to the nature of the problem being solved.
+      In a case like this, using composition instead of inheritance would just add
+      structural complexity with no meaningful increase in cohesion or decrease in
+      coupling.  Preferring composition to inheritance is a valid design principle,
+      but it should not be taken too far!
+   </li>
+</ul>
+
+<div class="header">
+<h2>Task Overview</h2>
+</div>
+
+<p>
+We will focus on "entities." These are all classes implementing the concept of an
+<code>Entity</code> from the original, provided implementation.  With a focus
+on entities, examine the set of classes you have from the previous assignment
+to identify duplication.  Refactor the duplicate code
+(fields and methods) into a hierarchy including of abstract classes, where
+appropriate.  The goal (and, to be both explicit, <em>the requirement for this
+assignment</em>) is to eliminate all such duplication.  This may seem
+excessive, but it is often illustrative to apply a principle to the extreme
+to see if it continues to provide benefits, and to get a sense for when it
+might fall short.
+</p>
+
+<p>
+Completion of this assignment will consist of
+</p>
+<ul>
+   <li>updated UML document (named <code>Inheritance.graphml</code>)</li>
+   <li>refactored code base</li>
+</ul>
+
+<h4 class="header">
+Duplicate Fields (Instance Variables)
+</h4>
+<p>
+Such duplication is most obvious for instance variables.  You may be
+able to identify duplication directly from the names and (matching or
+closely related) types.  There are, however, times when two classes use different
+names for conceptually identical fields.
+</p>
+
+<h4 class="header">
+Instance Methods
+</h4>
+
+<p>
+Identifying duplicate instance methods will require careful examination of the
+code within the potentially duplicate methods.  As a start, the names and
+parameters must generally match, but the method implementation must be considered
+as well.  You will find that the initial set of
+methods to consider are those specified by the interfaces introduced in
+the previous assignment.
+</p>
+
+<p>
+Your refactoring should not abuse inheritance with regard to methods.
+In particular, assume you have identified method <code>foo</code> as
+common among three classes (<code>A</code>, <code>B</code>,
+and <code>C</code>), but only two of them (<code>B</code> and <code>C</code>)
+have the same implementation.  You should not promote one implementation
+of <code>foo</code> (e.g., from <code>B</code> and <code>C</code>) to the
+new parent class only to then redefine it in some subclasses (e.g., in
+<code>A</code>).  Instead, you can, for example, define an abstract class (named
+<code>Abby</code> for this example) with an abstract method
+<code>foo</code>. <code>A</code> can extend <code>Abby</code> and define
+its implementation of <code>foo</code>.  Another new abstract
+class can also extend <code>Abby</code> to define the single implementation
+of <code>foo</code> used by <code>B</code> and <code>C</code> (which then
+extend this new class).
+</p>
+
+<h4 class="header">
+Take Care -- No Incidental Additions, Access Violations
+</h4>
+
+<p>
+At no point should a class inherit instance variables or methods due to
+this refactoring that it did not already possess prior to the refactoring.
+If such happens, then your refactoring either lifted something too high
+in the class hierarchy or it needs an additional intermediate class.
+</p>
+
+<p>
+As before, all data should remain <code>private</code>.  If a subclass
+needs to access/change this data, then it can do so via accessor or mutator
+methods.  If such methods do not exist, then you can add them (as
+<code>protected</code> methods) to the abstract class.
+</p>
+
+<h4 class="header">
+UML
+</h4>
+
+<p>
+You are strongly encouraged to begin this refactoring by updating your
+UML document first, while looking at the code for method
+implementations.  Doing so allows you to take advantage of the graphical aspects
+of UML to immediately identify duplication and to quickly refactor by
+injecting intermediate classes.  Experience with this project indicates
+that the majority of duplication can be identified and refactored quickly
+through this approach, which then gives you an initial plan for
+the code modifications.  Focus on the most obvious duplications first.
+</p><p>
+As always, be sure to compile and test your program after each individual
+refactoring!
+</p>
+
+<div class="header">
+<h2>Source Code Refactoring</h2>
+</div>
+
+<p>
+   Your refactoring should mirror the work that you do for your design
+document (UML diagram).  Your refactoring must not add or remove any
+program functionality.  The resulting program must work as before.
+</p>
+
+<div class="header">
+<h3>Additional Tips on Refactoring Methods</h3>
+</div>
+
+<p>
+Some of the entity classes contain identical methods, beause they
+were added in the previous assignment.  But
+there are also some methods from the orginal given code that are less
+obvious duplicates.  In addition, there are some methods that are not
+full duplicates, but that do contain significant amounts of code
+duplication.
+</p>
+
+<p>
+Consider the following tips for refactoring the less obvious duplications.
+This should be done after refactoring (both in UML and in the code base)
+the more obvious duplications so that there is less code to consider.
+</p>
+
+<ul>
+   <li><p>For two methods that appear to be doing roughly the same thing, but
+         that differ slightly in their implementation:  Examine the code
+         to determine if the code can be rewritten to match.  This 
+         requires careful consideration for what each method does (and does
+         <em>not</em> do) to avoid introducing bugs.
+      </p>
+   </li>
+   <li>
+      <p>Some methods may have the same general structure (and match
+         identically in significant portions), but differ in some
+         segments.  For such methods, the general structure and identical
+         portions can be refactored into a parent class.  This parent class
+         will declare new <code>protected abstract</code> method(s) that
+         each subclass then implements to define the unique behavior.
+      </p>
+   </li>
+</ul>
+
+<div class="header">
+<h2>Assignment Submission</h2>
+</div>
+
+<p>
+Your submission must include
+</p>
+<ul>
+   <li><code>Inheritance.graphml</code></li>
+   <li>All source files, includling any that were unchanged.
+Your grader should be able to build your project based
+on the files submitted.  You do not need to submit the image files,
+the image list, or the world save file.  Do not include any <code>.java</code> files
+that are not part of your project!  The grading program might not know which
+one to pick.
+</ul>
+<p>
+To submit your assignment, copy the files to the new, blank repository created when 
+you accept the github assignment at
+<a href="https://classroom.github.com/a/R5mtPKbe">https://classroom.github.com/a/R5mtPKbe</a>
+</p>
+
+</div>
+</div>
+</body>
+</html>

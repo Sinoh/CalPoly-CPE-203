@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Assignment 6 ("Program 4"), CSC/CPE 203</title>
+    <link rel="stylesheet" href="css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Assignment 6 ("Program 4"), CSC/CPE 203</h1>
+  </div>
+
+<p>
+For this assignment you must modify the "pathing" behavior of all entities
+that move within the world.  This is determined by the algorithm they 
+implement to choose their path.
+</p>
+
+<div class="header">
+ <h2>Objectives</h2>
+ </div>
+ 
+<ul>
+<li>Practice using a functional interface to eliminate the use of
+    the reflection API, specifically, any 
+    of <code>Class.isInstance(Object)</code>, <code>Object.getClass()</code>,
+    and/or the <code>MyClass.class</code> construct.
+<li>To modify the code to use the specified <code>PathingStrategy</code>
+    interface.
+<li>To integrate the use of this pathing strategy and understand the
+    associated code example.
+<li>Implement the
+    <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* pathing
+    algorithm</a> in the exisiting code by implementing a 
+    new class that implements the <code>PathingStrategy</code> interface.
+</ul>
+
+<div class="header">
+<h2>Overview</h2>
+</div>
+
+<p>
+This assignment deviates from the pattern of previous assignments.  Though
+this assignment does use some design strategies, the primary
+goal is to improve the functionality of some entities in the virtual world.
+</p>
+
+<p>
+In particular, as you are likely very aware of by now, the movement of
+the blobs and miners is very simplistic.  You have likely seen an entity 
+get stuck on an obstacle or on another entity.  You will improve the
+pathing strategy in order to achieve a better result in this assignment.
+</p>
+
+<p>
+Pathing algorithms are quite interesting, in and of themselves.  Our
+exploration of pathing in this assignment also motivates the use of
+some design patterns and techniques.  Applying these patterns will also
+improve the flexibility of the implementation.
+</p>
+
+<div class="header">
+<h2>Eliminating usage of the reflection API &mdash; a functional interface</h2>
+</div>
+
+<p>
+Deriving from the original given code, your implementation of the project
+currently contains at least one use of the reflection APIs.  Based on
+the specifications for <a href="assignment4.html">Assignment 4</a>,
+<code>findNearest</code> takes a <code>Class</code> object and then uses
+the <code>isInstance</code> method to find the desired entity.
+</p>
+
+<p>
+The use of reflection APIs is generally frowned upon, unless there is a
+truly compelling need.  Indeed, the <code>instanceof</code> operator is a
+part of Java so that the reflective API <code>Class.isInstance(Object)</code>
+(or its equivalent) is needed much less often, if at all.  Instead, there 
+is a mechanism built in to the language for determining when a downcast is 
+safe:  The <code>instanceof</code> operator.
+</p><p>
+Java was intentionally made so that
+<code>myObject instanceof MyClass</code> returns true if <code>myObject</code>
+is of type <code>MyClass</code> <strong>or any subtype 
+of <code>MyClass</code></strong>.  Among other benefits, this discourages
+programmers from
+breaking Liskov Substitutability.  With the reflection APIs, it's easy to
+(perhaps inadvertently) break Liskov, e.g. by comparing two <code>Class</code>
+objects using <code>==</code> or <code>.equals()</code>.
+</p><p>
+In addition, the current implementation of <code>findNearest()</code>
+is inflexible in that only a single type hierarchy can satisfy
+the check.  Thus, if a miner wanted to, for example, search for the
+nearest ore <i>or</i> blob, one would need to modify the
+<code>findNearest()</code> method signature, and it is used by 
+multiple entities.  Gaining this flexibility while eliminating the use of the
+reflection APIs is a perfect use of a functional interface.
+</p>
+
+<p>
+To make this improvement, follow these steps:
+</p>
+
+<ol>
+<li><p>
+   Rename <code>findNearest()</code> to <code>oldFindNearest()</code>,
+   then compile and run your code.
+   </p>
+<li><p>
+   Add a new <code>findNearest()</code> method that doesn't take an argument
+   of type <code>Class</code>.  Instead, have it take a functional interface
+   instance, for a function that takes an <code>Entity</code> instance and
+   returns a boolean.  <code>java.util.function.Predicate&lt;Entity></code>
+   will work beautifully here.  A good name for this parameter might
+   be <code>isTarget</code>.
+   </p>
+<li><p>
+   In the body of <code>findNearest()</code>, call <code>Predicate.test()</code>
+   (that is, <code>isTarget.test(myEntity)</code>) when the method needs
+   to test if an entity satisfies the condition that was passed in to it.
+   Compile your code.
+   </p>
+<li>
+   <p>
+   Find one place where <code>oldFindNearest()</code> is called.  Change it
+   to the new <code>findNearest()</code>, with a call like the following:
+   </p>
+   <blockquote>
+   <pre>Optional&lt;Entity&gt; foo = bar.findNearest(position(), e -> e instanceof Vein);</pre>
+   </blockquote>
+   <p>
+      This creates a lambda implementing <code>Predicate&lt;Entity></code>
+      that checks if the entity under consideration is an instance of
+      </code>Vein</code> (or, in theory, any subtype of <code>Vein</code>).
+   </p>
+<li>
+   <p>
+   Compile and test your code.
+   </p>
+<li>
+   <p>
+   Repeat the previous two steps until all calls to <code>oldFindNearest()</code>
+   are eliminated.  Remove <code>oldFindNearest()</code>.
+   </p>
+</ol>
+
+
+<div class="header">
+<h2>Supporting Variety &mdash; Strategy Pattern</h2>
+</div>
+
+<p>
+When an entity attempts to move, it needs to know the next step to take.
+How that next step is computed is, in many respects, irrelevant to the code
+within the corresponding entity.  In fact, we could imagine wanting
+to change that
+strategy for different builds of the program (to experiment), each time
+the program is executed (based on configuration), or dynamically during
+execution.  An application of the
+<a href="https://en.wikipedia.org/wiki/Strategy_pattern">Strategy 
+pattern</a> allows you to separate out the pathing algorithm,
+and easily substitute in a new algorithm as desired.
+</p>
+
+<p>
+Your implementation must use the given
+<a href="assignment6/PathingStrategy.java">PathingStrategy</a> interface,
+described below.
+</p>
+
+<blockquote>
+<pre>import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+interface PathingStrategy
+{
+    /**
+     * Returns a prefix of a path from the start point to a point within reach
+     * of the end point.  This path is valid ("clear") when returned, but
+     * may be invalidated in the future by the movement of other entities.
+     * &lt;p>
+     * The returned value doesn't include the start point or the end point.
+     *
+     * @param start   The start point for the path.
+     * @param end     The goal, the end point for the path.
+     * @param canPassThrough      A function that returns true if the
+     *                            given point isn't blocked.
+     * @param potentialNeighbors  A function that gives the potential neighbors
+     *                            for a given point.  This is just the set
+     *                            of points an entity could move to assuming
+     *                            nothing were blocked.
+     */
+    List&lt;Point> computePath(Point start, Point end,
+                            Predicate&lt;Point> canPassThrough,
+                            Function&lt;Point, List&lt;Point>> potentialNeighbors);
+}</pre>
+</blockquote>
+
+<p>
+This strategy declares only a single method, <code>computePath</code>, to
+compute at least the beginning of a path of 
+points (returned as a list) from the start point to the
+end point.
+</p> <p>
+In order to compute this path, the pathing algorithm needs to know the
+directions an entity can move.  This is provided to it with the functional
+interface parameter 
+<code>potentialNeighbors</code>.   In addition, in order to explore
+potential paths, the algorithm must be able to determine if a
+given point can be traversed.  In our program, this is true if the
+point is both a valid position in the world and a location that is
+not blocked.  This is provided to it by the 
+<code>canPassThrough</code> functional interface argument.  
+The pathing algorithm will determine that a path is complete when 
+a point is reached that is a neighbor of the
+<code>end</code> point.
+</p>
+
+<div class="header">
+<h3>Single-Step Pathing</h3>
+</div>
+
+<p>
+As an example of defining a pathing strategy, consider the following
+implementation of the single-step pathing algorithm,
+<a href="assignment6/SingleStepPathingStrategy.java">SingleStepPathingStrategy</a>.  This is the same algorithm as was implemented in the given code for
+the class project.  You should use this as an initial pathing algorithm, as
+you convert your program to the new interface.
+</p>
+
+<p>
+Modify the appropriate entities to use a <code>PathingStrategy</code>.
+Of course, you are encouraged to make one modification at a time, then
+build and test!  Use the given
+implementation to verify that your changes work.
+</p>
+
+<blockquote>
+<pre>import java.util.List;
+import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+class SingleStepPathingStrategy implements PathingStrategy
+{
+    @Override
+    public List&lt;Point> computePath(
+                            final Point start, final Point end,
+                            Predicate&lt;Point> canPassThrough,
+                            Function&lt;Point, List&lt;Point>> potentialNeighbors)
+    {
+        ArrayList&lt;Point> result = new ArrayList&lt;>();
+
+        // First, generate our list of neighbors, and see if the endpoint
+        // is one of them.  If so, we're one move away from our goal.
+        List&lt;Point> neighbors = potentialNeighbors.apply(start);
+        if (neighbors.contains(end)) {
+
+            // By our contract, we include neither the start nor the end 
+            // point, so if we're within reach of the end, the correct
+            // "path" is empty.
+            return result;
+        }
+
+        // Now, see which of our neighbors moves us closer (or at least not
+        // further away), in either x or y.
+        for (Point neighbor : potentialNeighbors.apply(start)) {
+            if (!canPassThrough.test(neighbor)) {
+                // ignore
+            } else if (neighbor.equals(start) || neighbor.equals(end)) {
+                // ignore
+            } else if (Math.abs(end.x-neighbor.x) > Math.abs(end.x-start.x)) {
+                // ignore
+            } else if (Math.abs(end.y-neighbor.y) > Math.abs(end.y-start.y)) {
+                // ignore
+            } else {
+                result.add(neighbor);
+                return result;
+                // Our "path" is only really one step toward the goal.  That's
+                // OK, because our contract says it's the *prefix* of the
+                // path.  A prefix can be just one step!
+            }
+        }
+        return result;
+    }
+}</pre>
+</blockquote>
+
+<p>
+This implementation only matches the original pathing algorithm
+if <code>potentialNeighbors</code> returns the same neighbor points, in the
+same order as before.  You can experiment with adding other points to the
+<code>List</code> returned by <code>potentialNeighbors</code>.  For
+example, you could allow diagonal movement, or even allow only diagonal
+movement.  Each of these approaches can be tried
+simply by changing the function passed to <code>computePath</code>.
+</p>
+
+<div class="header">
+<h2>A* Pathing</h2>
+</div>
+
+<p>
+Define a new <code>PathingStrategy</code> subclass that implements the
+<a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search
+algorithm</a>.  As before, an entity will take only one step along the
+computed path at a time.  The <code>computePath</code> method will be invoked
+multiple times as the entity moves toward the intended destination.  
+As such, take care if you maintain any state relevant to the algorithm.
+</p>
+
+<div class="header">
+<h3>Testing</h3>
+</div>
+
+<p>
+You are strongly encouraged to write unit tests for this strategy.  Since
+your implementation must conform to a specified interface, part of the
+grading will be based on instructor unit tests.
+</p>
+
+<div class="header">
+<h3>Alternate Traversal Approaches</h3>
+</div>
+
+<p>
+After completing the above, you might notice an indecisive miner
+ping-ponging between two points.  This is an artifact of attempting
+to move to the nearest ore and only following one step of any computed
+path.  That one step moves the miner closer to a different ore, which
+results in the computation of a new path ... that brings the miner
+right back to the previous point.
+</p>
+
+<p>
+Consider some alternatives. Implementation of these is entirely
+optional.  Any such changes would be in the entity code, not in the
+pathing strategy itself.
+</p>
+
+<ul>
+   <li><p>Non-fickle: Once a path is computed, continue to follow that path
+      as long as the target entity (e.g., ore) has not been collected by
+      another.  This approach skips the check for the "nearest target" as
+      long as the previous target is available.
+   </p></li>
+   <li><p>Determined: Once a path is computed, follow it to the end.  This
+      approach skips the check for "nearest target" until a new path must
+      be computed.
+   </p></li>
+   <li><p>Ol' College Try: Once a path is computed, follow it at least
+      X steps (or until exhausted) before giving up.  This approach
+      skips the check for "nearest" target until it has consumed a fixed
+      number of steps in the current path, or until it has consumed
+      the entire path.  After this initial effort, if the destination has
+      not been reached, then check for the "nearest target" and compute a
+      new path.
+   </p></li>
+</ul>
+
+<p>
+<span class="warning">Warning:</span>
+Of course, it is important to ensure that an implementation of any
+of these alternate approaches takes care not to move into an occupied cell.  
+Keep in mind that the path was clear when it was originally computed, but 
+other entities may move so as to block the path.
+</p>
+
+
+<div class="header">
+<h2>Assignment Submission</h2>
+</div>
+<p>
+To create at empty GitHub repository for submission, accept the assignment
+at <a href="https://classroom.github.com/a/rBohmIQy">https://classroom.github.com/a/rBohmIQy</a>.
+</p><p>
+Your submission must include all source files, including any that
+are unchanged.  Your grader should be able to build your project based
+on the files submitted.  Please also submit the image files,
+the image list, and the world save file.  
+</p><p>
+Your A* pathing strategy <strong>must be in 
+a class called <code>AStarPathingStrategy</code></strong>,
+and it <strong>must have a zero-argument constructor</strong>.  An automated
+test will use this constructor.  The <code>checkgit</code> program will check to
+make sure this class exists, and that an instance can be created.
+</p><p>
+Please be sure to so verify that you have submitted everything properly.
+A good way to do this is with <code>checkgit</code> on the Unix server.  Make
+sure your PATH on the unix server includes <code>/home/wffoote/public/bin</code>.
+See <a href="../computer_set_up.pdf">../computer_set_up.pdf</a> for instructions.
+</p>
+
+</div>
+</div>
+</body>
+</html>

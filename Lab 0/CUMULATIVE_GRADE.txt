@@ -1,0 +1,99 @@
+
+MIDTERM GRADING DETAILS
+-----------------------
+
+See also the answer key in general/notes/MidtermAnswers.pdf
+
+Page 1:  Type Hierarchy
+    Score:  85.0% (missed JKN)
+Page 2:  Bank methods
+    Score:  91.0%:
+        getNumberOfAccounts(): Iteration in getNumberOfAccounts() is inefficient
+        Bank(): Didn't use ArrayList to initialize accounts
+Page 3:  Bank methods continued
+    Score:  98.0%:
+        toString():  Minor other bug
+Page 4:  createTestBank()
+    Score:  100.0%:
+Page 5:  chargeMaintenanceFee()
+    Score:  80.0%:
+        Accessed private member variable
+Page 6:  UML diagram (functional interfaces)
+    Score:  70.0%:
+        Not as good a design as functional interface, but works.  UML matches.
+Page 7:  applyOperation() code (functional interfaces)
+    Score:  55.0%:
+        Iterates and visists, and some other ideas are there, but doesn't work.
+Page 8a:  Object.equals()
+    Score:  85.0%:
+        Doesn't do downcast
+        Doesn't use String.equals()
+Page 8b:  Object.hashCode()
+    Score:  70.0%:
+        Combines two values in non-optimal way (e.g. concatination) and uses primes in a way that helps
+Page 9:  Extra Credit
+    Score:  0.0%:
+        No extra credit
+
+
+                 MIDTERM RESULTS
+                 ===============
+
+Questions:
+    Classes. Interfaces and Types
+        85.0
+    Creating Classes and Methods
+        94.700005
+    Code Refactoring
+        68.0
+    Object.equals() and Object.hashCode()
+        77.5
+    Extra Credit:  Advanced Refactoring
+        0.0
+
+Total midterm score:  81.3
+
+
+                 CUMULATIVE RESULTS
+                 ==================
+
+Class project:
+    Assignment 1 (14% of project grade):  77.5%
+    Assignment 2 (10% of project grade):  94.39103%
+    Assignment 3 ( 7% of project grade):  98.0%
+    Assignment 4 (17% of project grade):  96.23529%
+    Assignment 5 (17% of project grade):  94.4%
+    Assignment 6 (17% of project grade):  91.2%
+    Assignment 7 (18% of project grade):  85.5%
+
+    Total class project:  90.4511%
+
+Labs:
+    Lab 0 (9% of lab grade):  100.0%
+    Lab 1 (9% of lab grade):  100.0%
+    Lab 2 (9% of lab grade):  94.73685%
+    Lab 3 (9% of lab grade):  90.0%
+    Lab 4 (9% of lab grade):  100.0%
+    Lab 5 (19% of lab grade):  69.16667%
+    Lab 6 (9% of lab grade):  84.0%
+    Lab 7 (9% of lab grade):  47.5%
+    Lab 8 (9% of lab grade):  65.549995%
+    Lab 9 (9% of lab grade):  100.0%
+
+    Total labs:  83.50249%
+
+Paritcipation:  79%
+
+Final:  60%
+
+
+Class project is 40% of final course grade.
+Midterm is 16% of final course grade.
+Lab scores are 10% of final course grade.
+Participatino is 4% of final course grade
+Final is 30% of final course grade.
+
+Total points included in this report are 100% of the final course grade.
+
+Course score (rounded to the nearest int):  79%
+Letter grade:  C+

@@ -1,0 +1,59 @@
+
+
+Week 1:  Horstman, chapters 1-3 (emphasis on 3)
+
+Week 2:  Horstman, chapter 4, but ignore finalize().
+	     (finalize() is mostly only useful when you're combining 
+	     Java with another language, like C).
+
+Week 3:
+    Core Java section 6.1
+        (don't worry about 6.1.4, 6.1.5, 6.1.6)
+    Further reading:  The Visitor Pattern from Design Patterns,
+        ISBN 0-201-63361-2 (scans available from library via PolyLearn)
+    Core Java section 5.1, 5.2, 5.8
+
+Week 4:
+    Core Java sections 5.3, 5.4, 5.6, 6.2, 6.3, 6.4
+        (don't worry about 6.5)
+
+Week 5:  Horstman, Chapter 7 intro, 5.4, 7.1, 7.2, 7.3, 9.2.3
+         (Yes, 5.4 in chapter five, and 9.2.3 in chapter nine)
+
+Week 6:  None
+
+Week 7:  
+    *  DZone article on annotations -- just read the first two, about
+       @Override and @FunctionalInterface
+       https://dzone.com/articles/5-annotations-every-java-developer-should-know
+
+    *  Java Tutorial on Interfaces and Inheritance:  
+       https://docs.oracle.com/javase/tutorial/java/IandI/index.html
+
+    *  Wikipedia articles on Design By Contract and Liskov Substitution 
+       Principle
+       https://en.wikipedia.org/wiki/Design_by_contract
+       https://en.wikipedia.org/wiki/Liskov_substitution_principle
+
+    *  Optionally:  Java's assert mechanism
+       https://docs.oracle.com/javase/7/docs/technotes/guides/language/assert.html
+
+    *  The SOLID acronym:
+       https://en.wikipedia.org/wiki/SOLID
+
+Week 8:
+    *  Pathing algorithms, A*:  
+       https://en.wikipedia.org/wiki/A*_search_algorithm
+
+    *  Core Java Chapter 8:  Intro, 8.1, 8.2, 8.3
+
+Week 9:
+    *  Core Java Chapter 8:  8.4, 8.5.1, 8.6 (skip 8.6.4, 8.6.6-8.6.10),
+       8.7, 8.8 (skip 8.8.4)
+
+Week 10:
+    The Strategy design pattern:  
+        https://en.wikipedia.org/wiki/Strategy_pattern
+    The Template Method design pattern:
+        https://en.wikipedia.org/wiki/Template_method_pattern
+        https://sourcemaking.com/design_patterns/template_method

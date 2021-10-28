@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>Lab 3, CSC/CPE 203</title>
+    <link rel="stylesheet" href="../css/assignment.css" type="text/css">
+</head>
+
+<body>
+<div class="container">
+  <div class="boxed">
+
+  <div class="header">  <h1>Lab 3, CSC/CPE 203 - Interfaces</h1></div>
+
+<p>
+ <div class="header">
+ <h2>Orientation</h2>
+ </div>
+<p>
+For this lab you will create a virtual drawing workspace on which
+you can place various geometric shapes. You will not actually be drawing
+the shapes in this program, rather, you will simply be representing geometric
+shapes as objects and providing the ability to place them in space. The
+workspace will make use of a <code>List</code> from the Java Standard Library 
+to collect shapes and will have methods that allow you to add, remove, and inspect
+the shapes it contains. All of the shapes share a common set of methods
+defined by a Java interface. The behavior of these common methods varies,
+as appropriate, by shape. In addition, each shape has one or more methods
+unique to it. The following shapes will be supported: circle, rectangle,
+triangle, and convex polygon.
+</p>
+
+<div class="header">
+<h2>Objectives</h2>
+</div>
+
+<ul>
+<li><p>To develop and demonstrate basic object-oriented development skills. Much of the 
+   structure of the solution is given - use good judgment when "filling in the blanks".</p></li>
+<li><p>To become familiar with Java interfaces and the concept of polymorphism.</p></li>
+<li><p>To practice using the <code>instanceof</code> operator.</p></li>
+<li><p>More practice using existing classes and interfaces from the Java Standard Library, such as: 
+   <code>List</code>, <code>ArrayList</code>, <code>LinkedList</code>, <code>Point</code>, and 
+   <code>Color</code>.</p></li>
+</ul>
+<div class="header">
+<h2>Given Files</h2>
+</div>
+
+<p>
+The materials for this lab, including the doucment you're reading,
+are in <code>general/lab_materials/lab03</code>.  Accept the github assignment
+invitation is at <a href="https://classroom.github.com/a/h8376EQj">https://classroom.github.com/a/h8376EQj</a>
+to create a blank repository.  Clone that blank repository, copy the files
+you need, and do your work there.
+
+</p>
+
+<p>
+The given file is a <i>starter</i> junit test file for your code.  Be sure to add to this file to make sure your
+code is working properly.  Your instructors have a much more extensive test file that they reserve the right to
+test your implementation with!
+</p>
+
+<div class="header">
+<h2>Ground Rules</h2>
+</div>
+
+<p>
+Many of the classes and interfaces you will be writing in
+this lab have counterparts in the Java Standard Library. You <b><i>may
+not</i></b> use the Java Standard Library versions in your implementation
+unless explicitly instructed to do so (see below). The Java Standard Library classes
+and interfaces you may use are identified by a complete package
+specification. For example, you will be using the <code>java.awt.Color</code>,
+<code>java.awt.Point</code>, and <code>java.util.List</code> classes/interfaces from the 
+Java Standard Library. You may also use the <code>java.lang.Math</code> class from the Java Standard
+Library (even though it is not explicitly referenced in this document).
+Any classes or interfaces in the specifications below (other than Point, Color, and List)
+must be entirely written by you. If you have any questions
+regarding this restriction please be sure to ask your instructor early in the
+development process (ideally, before you have written any code!).
+</p>
+
+<p>
+As stated above, your classes and interfaces will use many classes that already exist in the Java Standard Library.  
+For example, to use the <code>Color</code> and <code>Point</code> classes, you will need to import 
+<code>java.awt.Color</code> and <code>java.awt.Point</code>. 
+</p><p>Some of your code from Lab 2 can be reused but will need to be re-written to match this specification.</p>
+<div class="header">
+<h2>Task</h2>
+</div>
+
+<p>
+You must define the <code>Shape</code> interface and implement the <code>Circle</code>, 
+<code>Rectangle</code>, <code>ConvexPolygon</code>, <code>Triangle</code>, and 
+<code>Workspace</code> classes as described below. The specific instance  variables 
+are not explicity specified. Remember, each instance variable makes every object of 
+the class require more memory. All instance variables should be essential to defining 
+the state of an object and/or provide a significant computational efficiency or reduction 
+in code complexity. Other variables should be declared as local variables in the method 
+where they are used. <i>Be ready to justify your choices!</i> Be sure all your instance 
+variables maintain encapsulation (which in this case, means they are private).
+</p>
+
+<p>
+Also, you may add helper methods other than the methods specified below, but the additional methods must be private.
+</p>
+
+<ol>
+   <li>
+   <p>
+   Define a Java interface <code>Shape</code> with the following methods. (Note that the
+   input parameters for each method, if any, are intentionally not shown. You must figure
+   out what is needed):
+   <ul>
+      <li><code>Color getColor()</code> - Returns the <code>java.awt.Color</code> of
+      the <code>Shape</code>.</li>
+      <li><code>void setColor()</code> - Sets the <code>java.awt.Color</code> of the <code>Shape</code>.</li>
+      <li><code>double getArea()</code> - Returns the area of the <code>Shape</code></li>
+      <li><code>double getPerimeter()</code> - Returns the perimeter of the <code>Shape</code></li>
+      <li><code>void translate()</code> - Translates the entire shape by the (x,y) coordinates of a given 
+      <code>java.awt.Point</code></li>
+   </ul>
+   </p>
+   </li>
+
+
+   <li>
+   <p>
+   Define a Java class <code>Circle</code> that implements the <code>Shape</code> interface. Circles have a radius,
+   a center, and a <code>Color</code>.  In addition to implementing the required methods specified by the <code>Shape</code> 
+   interface you must also implement the following methods. (Again, note that the input parameters for each method, 
+   if any, are intentionally not shown):
+   <ul>
+      <li><code>Circle()</code> - A constructor with parameters to initialize all its instance variables.  Do not 
+      implement a default constructor.</li>
+      <li><code>double getRadius()</code> - Returns the radius of the <code>Circle</code>.</li>
+      <li><code>void setRadius()</code> - Sets the radius of the <code>Circle</code></li>
+      <li><code>Point getCenter()</code> - Returns the center of the <code>Circle</code></li>
+   </ul>
+   </br>Note: Be sure to use the constant <code>Math.PI</code> when performing any calculations involving PI.
+   </p>
+   </li>
+
+   <li>
+   <p>
+   Define a Java class <code>Rectangle</code> that implements the <code>Shape</code> interface. Rectangles have a 
+   width, a height, a Point indicating the topLeftCorner, and a <code>Color</code>.  In addition to implementing 
+   the required methods specified by the <code>Shape</code> interface you must also implement the following methods. 
+   (Again, note that the input parameters for each method, if any, are intentionally not shown):
+   <ul>
+      <li><code>Rectangle()</code> - A constructor with parameters to initialize all its instance variables.  Do not 
+      implement a default constructor.</li>
+      <li><code>double getWidth()</code> - Returns the width of the <code>Rectangle</code>.</li>
+      <li><code>void setWidth()</code> - Sets the width of the <code>Rectangle</code></li>
+      <li><code>double getHeight()</code> - Returns the height of the <code>Rectangle</code>.</li>
+      <li><code>void setHeight()</code> - Sets the height of the <code>Rectangle</code></li>
+      <li><code>Point getTopLeft()</code> - Returns the <code>Point</code> representing the top left corner 
+      of the <code>Rectangle</code></li>
+   </ul>
+   </p>
+   </li>
+
+   <li>
+   <p>
+   Define a Java class <code>Triangle</code> that implements the <code>Shape</code> interface. Triangles have three 
+   Points indicating its vertices and a <code>Color</code>.  To simplify your solution, the vertices will always be    given in counter-clockwise order. However, there are calculations for the area of a Triangle that will work with    the vertices in any order. In addition to implementing the required methods specified by the 
+   <code>Shape</code> interface you must also implement the following methods. (Again, note that the input parameters 
+   for each method, if any, are intentionally not shown):
+   <ul>
+      <li><code>Triangle()</code> - A constructor with parameters to initialize all its instance variables.  Do not 
+      implement a default constructor. The first <code>Point</code> passed to the constructor will be vertex A, the 
+      second <code>Point</code> vertex B, and so on.</li>
+      <li><code>Point getVertexA()</code> - Returns the Point representing vertex A of the <code>Triangle</code>.</li>
+      <li><code>Point getVertexB()</code> - Returns the Point representing vertex B of the <code>Triangle</code>.</li>
+      <li><code>Point getVertexC()</code> - Returns the Point representing vertex C of the <code>Triangle</code>.</li>
+   </ul>
+   </p>
+   </li>
+
+   <li>
+   <p>
+   Define a Java class <code>ConvexPolygon</code> that implements the <code>Shape</code> interface. A ConvexPolygon 
+   have a java <code>Point</code> array (not <code>ArrayList</code>) indicating its vertices and a <code>Color</code>.  
+   Assume the Points in the <code>Point</code> array will always be given in counter-clockwise order.  In addition 
+   to implementing the required methods specified by the <code>Shape</code> interface you must also implement the 
+   following methods. (Again, note that the input parameters for each method, if any, are intentionally not shown):
+   <ul>
+      <li><code>ConvexPolygon()</code> - A constructor with parameters to initialize all its instance variables.  Do not 
+      implement a default constructor.</li>
+      <li><code>Point getVertex()</code> - Takes an index and returns the specified vertex of the <code>ConvexPolygon</code>.</li>
+   </ul>
+   </p>
+   </li>
+
+   <li>
+   <p>
+   Define a Java class <code>WorkSpace</code> to hold <code>Shape</code> objects. The <code>WorkSpace</code> class
+   shold have <i>one private instance variable</i> of type <code>List&lt;Shape&gt;</code> to hold <code>Shape</code> objects.  
+   You may choose which kind of <code>List</code> you use. The <code>WorkSpace</code> class should have the following 
+   public methods. (<i>Note that this time the parameters <b>are</b> specified!</i>):
+   <ul>
+      <li><code>WorkSpace()</code> - A default constructor to initialize its instance variable to an empty List. 
+      The constructor should not take any parameters.  (If you do nothing in this constructor, you may omit it from your code altogether.)</li>
+      <li><code>void add(Shape shape)</code> - Adds an object which implements the <code>Shape</code> interface to the end of the <code>List</code>
+      in the <code>WorkSpace</code>.</li>
+      <li><code>Shape get(int index)</code> - Returns the specified <code>Shape</code> from the <code>WorkSpace</code>.</li>
+      <li><code>int size()</code> - Returns the number of <code>Shapes</code> contained by the <code>WorkSpace</code>.</li>
+      <li><code>List&lt;Circle&gt; getCircles()</code> - Returns a <code>List</code> of all the <code>Circle</code> objects contained 
+      by the <code>WorkSpace</code>.</li>
+      <li><code>List&lt;Rectangle&gt; getRectangles()</code> - Returns a <code>List</code> of all the <code>Rectangle</code> objects contained 
+      by the <code>WorkSpace</code>.</li>
+      <li><code>List&lt;Triangle&gt; getTriangles()</code> - Returns a <code>List</code> of all the <code>Triangle</code> objects contained 
+      by the <code>WorkSpace</code>.</li>
+      <li><code>List&lt;ConvexPolygon&gt; getConvexPolygons()</code> - Returns a <code>List</code> of all the <code>ConvexPolygon</code> 
+      objects contained 
+      by the <code>WorkSpace</code>.</li>
+      <li><code>List&lt;Shape&gt; getShapesByColor(Color color)</code> - Returns a <code>List</code> of all the <code>Shape</code> 
+      objects contained 
+      by the <code>WorkSpace</code> that match the specified <code>Color</code>.</li>
+      <li><code>double getAreaOfAllShapes()</code> - Returns the sum of the areas of all the <code>Shapes</code> contained by the 
+      <code>WorkSpace</code>.</li>
+      <li><code>double getPerimeterOfAllShapes()</code> - Returns the sum of the perimeters of all the <code>Shapes</code> contained by the 
+      <code>WorkSpace</code>.</li>
+   </ul>
+   </p>
+   <p>
+   Remember to use the <code>instanceof</code> operator in the appropriate places of your solution.
+   </p>
+   </li>
+</ol>
+
+<div class="header">
+<h3>Suggestions</h3>
+</div>
+<p>
+Note that these are merely suggestions. You are not required to follow them.
+</p>
+
+<ul>
+   <li><p>Write the <code>Shape</code> interface first.</p></li>
+   <li><p>After creating the <code>Shape</code> interface, write one class at a time that implements the interface. Test and debug
+   until you are satisfied with its design, implementation, and functionality.  Then move on to the next class.</p></li>
+   <li><p>Implement the <code>WorkSpace</code> class last, and develop it incrementally, testing as you go.  Notice that many of the methods are similar and differ only by the 
+   <code>Shape</code> type that they work with.</p></li>
+   <li><p>The given <code>TestCases</code> test the implemenation specifics of each of your classes.  Comment 
+      out the classes that you have not yet implemented so that you can develop and test incrementally.</p></li>         <li><p><a href="http://www.mathwords.com/a/area_convex_polygon.htm">Mathwords</a> is a good reference!</p></li>
+
+</ul>
+<div class="header"><h2>Testing</h2></div><p>You are given a starting test file to help you write your tests.  It includes sometests for Circle, WorkSpace, and your implemenation specifics. This file is a good place to find some of the expected method parameters if you are stuck.  You are expected to add to this test file to thoroughly test all of your code! </p>
+
+<div class="header">
+<h2>Submission</h2>
+</div>
+<p>
+This lab is due by the end of lab in about a week (see the syllabus for
+your section).</br></br>
+Be sure to commit the code by the due date.  Your instructor reserves
+the right to run further tests on your code.
+Demonstrate your working program to your instructor.  Be prepared to show
+your source code.  (Partial credit available up to instructor discretion).</p>
+</div>
+
+</div>
+</div>
+</body>
+</html>

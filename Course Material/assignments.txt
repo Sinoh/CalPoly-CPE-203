@@ -1,0 +1,54 @@
+
+
+Lab 0 link:  https://classroom.github.com/a/RWLxYiZt
+    MWF sections due:  4/9
+    TR section due:  4/9
+
+Lab 1 link:  https://classroom.github.com/a/VXaobOC5
+    MWF sections due:  4/12
+    TR section due:  4/11
+
+Class project, assignment 1 (Design Doc 1):  
+    Github assignment link for submission:  https://classroom.github.com/a/x0dJP9jf
+    MWF sections due:  4/16
+    TR section due:  4/17
+
+Lab 2 link:  https://classroom.github.com/a/Hzj4EVL0
+    See syllabus and lab_materials/lab02
+
+Lab 3 link:  https://classroom.github.com/a/h8376EQj
+    See syllabus and lab_materials/lab03
+
+Lab 4:  See syllabus and lab_materials/lab04
+
+Lab 5:  See syllabus and lab_materials/lab05
+
+Lab 6:  See syllabus and lab_materials/lab06
+
+Lab 7:  See syllabus and lab_materials/lab07
+
+Lab 8:  See syllabus and lab_materials/lab08
+
+Class project, Assignment 2 ("Program 1")
+    Submission repo via:  https://classroom.github.com/a/MdswK1oP
+    See syllabus and general/class_project/assignment2.html
+
+Class project, Assignment 3 ("Design 2")
+    Submission repo via:  https://classroom.github.com/a/fdgSFzYF
+    See syllabus and general/class_project/assignment3.html
+
+Class Project, Assignment 4 ("Program 2")
+    Submission repo via:  https://classroom.github.com/a/ok3fQ85f
+    See syllabus and general/class_project/assignment4.html
+
+Class Project, Assignment 5 ("Program 3")
+    Submission repo via:  https://classroom.github.com/a/R5mtPKbe
+    See syllabus and general/class_project/assignment5.html
+
+Class Project, Assignment 6 ("Program 4")
+    Submission repo via:  https://classroom.github.com/a/rBohmIQy
+    See syllabus and general/class_project/assignment6.html
+
+Class Project, Assignment 7 ("Program 5")
+    Submission repo via:  https://classroom.github.com/a/dG6l-C1L
+    See syllabus and general/class_project/assignment6.html

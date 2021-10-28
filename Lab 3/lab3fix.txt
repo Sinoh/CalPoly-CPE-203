@@ -1,0 +1,23 @@
+Hello,
+
+If you are getting this file, it means that the lab 3 you submitted
+did not compile with my test script. There may be several reasons, but 
+what I've found most common are the following:
+
+	1. Using List instead of an array for the points in ConvexPolygon
+	2. Misspelled classes such as WorkSpace.java versus Workspace.java
+	3. Misspelled methods such as getConvexPolygons() versus getConvexPolygon()
+	4. Code you submitted that just won't compile
+
+These are just some of the common errors and there could be other errors as to 
+why your code failed to run with my testsuite. If you could fix up your code and 
+then resubmit to github that'd be great. Please be sure to look at the specification 
+carefully.
+
+If you have any questions as to why your code doesn't compile or if you believe 
+it to be correct don't hesitate to come talk to me. Another email has been sent 
+out regarding to my availability. If none of these hours work please just email 
+me and we can try to work something out.
+
+Have a great day,
+Your TA
